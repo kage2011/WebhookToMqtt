@@ -14,6 +14,8 @@ client = mqtt.Client(transport="websockets")
 client.tls_set()
 client.connect(mqtt_broker, mqtt_port, 60)
 
+print("test")
+
 @app.route('/webhook', methods=['POST'])
 def webhook():
     data = request.json
@@ -23,3 +25,4 @@ def webhook():
 
 if __name__ == '__main__':
     app.run(port=5000)
+
