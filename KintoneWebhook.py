@@ -7,7 +7,7 @@ app = Flask(__name__)
 # MQTT設定
 mqtt_broker = "broker.hivemq.com"
 mqtt_port = 8884
-mqtt_topic = "kintone/button"
+mqtt_topic = "kintone/comment/webhook"
 
 # MQTTクライアントの設定
 client = mqtt.Client(transport="websockets")
