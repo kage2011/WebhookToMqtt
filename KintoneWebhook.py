@@ -20,27 +20,36 @@ def on_connect(client, userdata, flags, rc):
     else:
         print("Failed to connect, return code %d\n", rc)
 
+def on_publish(client, userdata, mid):
+    print("Message Published!")
+
+def on_disconnect(client, userdata, rc):
+    print("Disconnected from MQTT Broker")
+    if rc != 0:
+        print("Unexpected disconnection. Reconnecting...")
+        try:
+            client.reconnect()
+        except Exception as e:
+            print("Reconnection failed:", e)
+
 client.on_connect = on_connect
+client.on_publish = on_publish
+client.on_disconnect = on_disconnect
+client.connect(mqtt_broker, mqtt_port, 60)
+#client.loop_start()  # ループをバックグラウンドで開始
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
+    print("hooking!")
     data = request.json
+    print("Received webhook data:", data)  # 受信データをログに記録
     payload = json.dumps(data)
-    
-    # Webhookを受け取った際にMQTTブローカーに接続
-    client.connect(mqtt_broker, mqtt_port, 60)
-    # client.loop_start()  # ループをバックグラウンドで開始
-    
     try:
         result = client.publish(mqtt_topic, payload)
         result.wait_for_publish()
         print("MQTT message sent!")
     except Exception as e:
         print("Failed to send MQTT message:", e)
-    
-    # client.loop_stop()  # ループを停止
-    client.disconnect()  # 接続を切断
-    
     return "Webhook received and MQTT message sent", 200
 
 if __name__ == '__main__':
