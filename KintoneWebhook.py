@@ -45,6 +45,7 @@ def webhook():
     print("Received webhook data:", data)  # 受信データをログに記録
     payload = json.dumps(data)
     try:
+        client.reconnect()
         result = client.publish(mqtt_topic, payload)
         result.wait_for_publish()
         print("MQTT message sent!")
