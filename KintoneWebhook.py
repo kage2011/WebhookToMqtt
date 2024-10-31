@@ -3,7 +3,6 @@ import json
 from flask import Flask, request
 
 app = Flask(__name__)
-
 # MQTT設定
 mqtt_broker = "broker.hivemq.com"
 mqtt_port = 8884
