@@ -29,7 +29,7 @@ def webhook():
     
     # Webhookを受け取った際にMQTTブローカーに接続
     client.connect(mqtt_broker, mqtt_port, 60)
-    client.loop_start()  # ループをバックグラウンドで開始
+    # client.loop_start()  # ループをバックグラウンドで開始
     
     try:
         result = client.publish(mqtt_topic, payload)
@@ -38,7 +38,7 @@ def webhook():
     except Exception as e:
         print("Failed to send MQTT message:", e)
     
-    client.loop_stop()  # ループを停止
+    # client.loop_stop()  # ループを停止
     client.disconnect()  # 接続を切断
     
     return "Webhook received and MQTT message sent", 200
