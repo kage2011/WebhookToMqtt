@@ -31,7 +31,7 @@ def on_publish(client, userdata, mid):
 client.on_connect = on_connect
 client.on_publish = on_publish
 client.connect(mqtt_broker, mqtt_port, 60)
-client.loop_start()
+# client.loop_start()
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
