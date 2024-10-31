@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: flask-mqtt-app
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python KintoneWebhook.py"
+    envVars:
+      - key: MQTT_BROKER
+        value: broker.hivemq.com
+      - key: MQTT_PORT
+        value: 8884
+      - key: MQTT_TOPIC
+        value: kintone/comment/webhook
