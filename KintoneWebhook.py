@@ -17,6 +17,7 @@ client.connect(mqtt_broker, mqtt_port, 60)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
+    print("hooking!")
     data = request.json
     payload = json.dumps(data)
     client.publish(mqtt_topic, payload)
