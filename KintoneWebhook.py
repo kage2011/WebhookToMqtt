@@ -5,10 +5,16 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
-# 環境変数からMQTT設定を取得
-mqtt_broker = os.getenv("MQTT_BROKER", "broker.hivemq.com")
-mqtt_port = int(os.getenv("MQTT_PORT", 8884))
-mqtt_topic = os.getenv("MQTT_TOPIC", "kintone/comment/webhook")
+# # 環境変数からMQTT設定を取得
+# mqtt_broker = os.getenv("MQTT_BROKER", "broker.hivemq.com")
+# mqtt_port = int(os.getenv("MQTT_PORT", 8884))
+# mqtt_topic = os.getenv("MQTT_TOPIC", "kintone/comment/webhook")
+
+# MQTTブローカーの設定
+mqtt_broker = "broker.hivemq.com"
+mqtt_port = 8884
+mqtt_topic = "kintone/comment/webhook"
+
 
 # MQTTクライアントの設定
 client = mqtt.Client(transport="websockets")
