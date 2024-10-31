@@ -2,6 +2,7 @@ import os
 import paho.mqtt.client as mqtt
 import json
 from flask import Flask, request
+import threading
 
 app = Flask(__name__)
 
@@ -9,11 +10,6 @@ app = Flask(__name__)
 mqtt_broker = os.getenv("MQTT_BROKER", "broker.hivemq.com")
 mqtt_port = int(os.getenv("MQTT_PORT", 8884))
 mqtt_topic = os.getenv("MQTT_TOPIC", "kintone/comment/webhook")
-
-# # MQTTブローカーの設定
-# mqtt_broker = "broker.hivemq.com"
-# mqtt_port = 8884
-# mqtt_topic = "kintone/comment/webhook"
 
 # MQTTクライアントの設定
 client = mqtt.Client(transport="websockets")
@@ -31,7 +27,13 @@ def on_publish(client, userdata, mid):
 client.on_connect = on_connect
 client.on_publish = on_publish
 client.connect(mqtt_broker, mqtt_port, 60)
-# client.loop_start()
+
+def mqtt_loop():
+    client.loop_forever()
+
+# MQTTクライアントを別スレッドで実行
+mqtt_thread = threading.Thread(target=mqtt_loop)
+mqtt_thread.start()
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
